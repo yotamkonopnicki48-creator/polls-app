@@ -6,6 +6,12 @@ import {
   signOut,
 } from "firebase/auth";
 import {
+  signInWithRedirect,
+  getRedirectResult,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
+import {
   collection,
   addDoc,
   onSnapshot,
@@ -47,6 +53,13 @@ export default function App() {
     return () => unsub();
   }, []);
 
+  // Handle redirect result when user returns from Google
+  useEffect(() => {
+    getRedirectResult(auth).catch((err) => {
+      setAuthError(err.message);
+    });
+  }, []);
+
   // Listen to Groups and Polls in real-time
   useEffect(() => {
     if (!user) return;
@@ -68,10 +81,11 @@ export default function App() {
   }, [user]);
 
   // Handle Google Sign-In
+  // Handle Google Sign-In via Redirect (Mobile-Friendly)
   const handleGoogleSignIn = async () => {
     setAuthError("");
     try {
-      await signInWithPopup(auth, googleProvider);
+      await signInWithRedirect(auth, googleProvider);
     } catch (err) {
       setAuthError(err.message);
     }
