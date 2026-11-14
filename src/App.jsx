@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db, auth, googleProvider } from "./firebase";
 import {
-  signInWithPopup,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
-import {
   signInWithRedirect,
   getRedirectResult,
   onAuthStateChanged,
@@ -80,7 +75,7 @@ export default function App() {
     };
   }, [user]);
 
-  // Handle Google Sign-In
+
   // Handle Google Sign-In via Redirect (Mobile-Friendly)
   const handleGoogleSignIn = async () => {
     setAuthError("");
