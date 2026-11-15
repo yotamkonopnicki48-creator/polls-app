@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db, auth, googleProvider } from "./firebase";
 import {
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
@@ -49,11 +48,6 @@ export default function App() {
   }, []);
 
   // Handle redirect result when user returns from Google
-  useEffect(() => {
-    getRedirectResult(auth).catch((err) => {
-      setAuthError(err.message);
-    });
-  }, []);
 
   // Listen to Groups and Polls in real-time
   useEffect(() => {
@@ -77,10 +71,11 @@ export default function App() {
 
 
   // Handle Google Sign-In via Redirect (Mobile-Friendly)
+  // Handle Google Sign-In (Works smoothly in PWA Home Screen mode)
   const handleGoogleSignIn = async () => {
     setAuthError("");
     try {
-      await signInWithRedirect(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider);
     } catch (err) {
       setAuthError(err.message);
     }
